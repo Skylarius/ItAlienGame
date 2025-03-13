@@ -30,6 +30,11 @@ namespace Unity.FPS.Game
                 }
             }
 
+            if (GetComponent<ObjectiveQueue>().ActivateNextObjective())
+            {
+                return;
+            }
+
             m_ObjectivesCompleted = true;
             EventManager.Broadcast(Events.AllObjectivesCompletedEvent);
         }
