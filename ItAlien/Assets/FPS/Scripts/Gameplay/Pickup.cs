@@ -35,17 +35,17 @@ namespace Unity.FPS.Gameplay
             m_Collider.isTrigger = true;
 
             // Remember start position for animation
-            m_StartPosition = transform.position;
+            //m_StartPosition = transform.position;
         }
 
         void Update()
         {
             // Handle bobbing
-            float bobbingAnimationPhase = ((Mathf.Sin(Time.time * VerticalBobFrequency) * 0.5f) + 0.5f) * BobbingAmount;
+           /* float bobbingAnimationPhase = ((Mathf.Sin(Time.time * VerticalBobFrequency) * 0.5f) + 0.5f) * BobbingAmount;
             transform.position = m_StartPosition + Vector3.up * bobbingAnimationPhase;
 
             // Handle rotating
-            transform.Rotate(Vector3.up, RotatingSpeed * Time.deltaTime, Space.Self);
+            transform.Rotate(Vector3.up, RotatingSpeed * Time.deltaTime, Space.Self);*/
         }
 
         void OnTriggerEnter(Collider other)
