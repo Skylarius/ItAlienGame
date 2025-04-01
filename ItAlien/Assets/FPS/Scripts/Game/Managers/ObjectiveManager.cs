@@ -32,6 +32,7 @@ namespace Unity.FPS.Game
 
             if (GetComponent<ObjectiveQueue>().ActivateNextObjective())
             {
+                RenderSettings.skybox.SetFloat("_Exposure", RenderSettings.skybox.GetFloat("_Exposure") - 0.05f);
                 return;
             }
 
