@@ -21,7 +21,7 @@ namespace Unity.FPS.Gameplay
         {
             Health playerHealth = player.GetComponent<Health>();
 
-            if (playerHealth && playerHealth.CanPickup())
+            if (playerHealth /*&& playerHealth.CanPickup()*/)
             {
 
                 playerHealth.Heal(HealAmount);
