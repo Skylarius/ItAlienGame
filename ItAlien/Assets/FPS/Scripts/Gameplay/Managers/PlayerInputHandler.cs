@@ -234,8 +234,6 @@ namespace Unity.FPS.Gameplay
             {
                 // Check if this look input is coming from the mouse
                 bool isGamepad = Input.GetAxis(stickInputName) != 0f;
-                //Perche sei  sempre Vero ? 
-                Debug.Log("PlayerInputHandler::GetMouseOrStickLookAxis isGamepad ->" + isGamepad);
                 float i = isGamepad ? Input.GetAxis(stickInputName) : Input.GetAxisRaw(mouseInputName);
 
                 // handle inverting vertical input
@@ -249,8 +247,6 @@ namespace Unity.FPS.Gameplay
                 {
                     // since mouse input is already deltaTime-dependant, only scale input with frame time if it's coming from sticks
                     i *= Time.deltaTime;
-                    Debug.Log("PlayerInputHandler::GetMouseOrStickLookAxis (mouse if )->" + i);
-
                 }
                 else
                 {
