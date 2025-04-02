@@ -41,7 +41,7 @@ namespace Unity.FPS.Game
                 NewGameObject.name = Sample.name + "_Clone_" + i.ToString();
                 float x = Random.Range(BottomLeft.x, TopRight.x);
                 float y = Sample.transform.position.y;
-                float z = Random.Range(BottomLeft.y, TopRight.y);
+                float z = Random.Range(TopRight.y, BottomLeft.y);
                 NewGameObject.transform.position = new Vector3(x, y, z);
                 NewGameObject.SetActive(true);
             }
