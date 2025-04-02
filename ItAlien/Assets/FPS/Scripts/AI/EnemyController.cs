@@ -35,6 +35,10 @@ namespace Unity.FPS.AI
         [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
         public float DeathDuration = 0f;
 
+        [Header("Behavior Parameters")]
+        [Tooltip("Determs if this Enemy relevant to EnemyCount or not")]
+        public bool EnemyRelevance = true;
+
 
         [Header("Weapons Parameters")] [Tooltip("Allow weapon swapping for this enemy")]
         public bool SwapToNextWeapon = false;
@@ -126,7 +130,10 @@ namespace Unity.FPS.AI
             m_ActorsManager = FindObjectOfType<ActorsManager>();
             DebugUtility.HandleErrorIfNullFindObject<ActorsManager, EnemyController>(m_ActorsManager, this);
 
-            m_EnemyManager.RegisterEnemy(this);
+            if (EnemyRelevance)
+            {
+                m_EnemyManager.RegisterEnemy(this);
+            }
 
             m_Health = GetComponent<Health>();
             DebugUtility.HandleErrorIfNullGetComponent<Health, EnemyController>(m_Health, this, gameObject);
@@ -364,7 +371,10 @@ namespace Unity.FPS.AI
             Destroy(vfx, 5f);
 
             // tells the game flow manager to handle the enemy destuction
-            m_EnemyManager.UnregisterEnemy(this);
+            if (EnemyRelevance)
+            {
+                m_EnemyManager.UnregisterEnemy(this);
+            }
 
             // loot an object
             if (TryDropItem())

@@ -1,23 +1,20 @@
-﻿using Unity.FPS.Game;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Unity.FPS.Game;
 
 namespace Unity.FPS.AI
 {
     [RequireComponent(typeof(EnemyController))]
-    public class EnemyMobile : MonoBehaviour
+    public class AllyMobile : MonoBehaviour
     {
         public enum AIState
         {
             Patrol,
-            Follow,
-            Attack,
+            Follow
         }
 
         public Animator Animator;
-
-        [Tooltip("Fraction of the enemy's attack range at which it will stop moving towards target while attacking")]
-        [Range(0f, 1f)]
-        public float AttackStopDistanceRatio = 0.5f;
 
         [Tooltip("The random hit damage effects")]
         public ParticleSystem[] RandomHitSparks;
@@ -33,26 +30,22 @@ namespace Unity.FPS.AI
         AudioSource m_AudioSource;
 
         const string k_AnimMoveSpeedParameter = "MoveSpeed";
-        const string k_AnimAttackParameter = "Attack";
+        //const string k_AnimAttackParameter = "Attack";
         const string k_AnimAlertedParameter = "Alerted";
         const string k_AnimOnDamagedParameter = "OnDamaged";
-
+        // Start is called before the first frame update
         void Start()
         {
             m_EnemyController = GetComponent<EnemyController>();
             DebugUtility.HandleErrorIfNullGetComponent<EnemyController, EnemyMobile>(m_EnemyController, this,
-                gameObject);
-
-            m_EnemyController.onAttack += OnAttack;
+               gameObject);
             m_EnemyController.onDetectedTarget += OnDetectedTarget;
             m_EnemyController.onLostTarget += OnLostTarget;
             m_EnemyController.SetPathDestinationToClosestNode();
             m_EnemyController.onDamaged += OnDamaged;
 
-            // Start patrolling
             AiState = AIState.Patrol;
 
-            // adding a audio source to play the movement sound on it
             m_AudioSource = GetComponent<AudioSource>();
             DebugUtility.HandleErrorIfNullGetComponent<AudioSource, EnemyMobile>(m_AudioSource, this, gameObject);
             m_AudioSource.clip = MovementSound;
@@ -60,49 +53,35 @@ namespace Unity.FPS.AI
 
         }
 
+        // Update is called once per frame
         void Update()
         {
             UpdateAiStateTransitions();
             UpdateCurrentAiState();
-
-            float moveSpeed = m_EnemyController.NavMeshAgent.velocity.magnitude;
-
-            // Update animator speed parameter
-            Animator.SetFloat(k_AnimMoveSpeedParameter, moveSpeed);
-
-            // changing the pitch of the movement sound depending on the movement speed
-            m_AudioSource.pitch = Mathf.Lerp(PitchDistortionMovementSpeed.Min, PitchDistortionMovementSpeed.Max,
-                moveSpeed / m_EnemyController.NavMeshAgent.speed);
         }
 
         void UpdateAiStateTransitions()
         {
-            // Handle transitions 
             switch (AiState)
             {
-                case AIState.Follow:
-                    // Transition to attack when there is a line of sight to the target
-                    if (m_EnemyController.IsSeeingTarget && m_EnemyController.IsTargetInAttackRange)
-                    {
-                        AiState = AIState.Attack;
-                        m_EnemyController.SetNavDestination(transform.position);
-                    }
-
-                    break;
-                case AIState.Attack:
-                    // Transition to follow when no longer a target in attack range
-                    if (!m_EnemyController.IsTargetInAttackRange)
+                case AIState.Patrol:
+                    /*if (m_EnemyController.IsSeeingTarget)
                     {
                         AiState = AIState.Follow;
-                    }
-
+                    }*/
+                    break;
+                //DOUBT
+                case AIState.Follow:
+                    /*if (!m_EnemyController.IsSeeingTarget)
+                    {
+                        AiState = AIState.Patrol;
+                    }*/
                     break;
             }
         }
 
         void UpdateCurrentAiState()
         {
-            // Handle logic 
             switch (AiState)
             {
                 case AIState.Patrol:
@@ -112,43 +91,20 @@ namespace Unity.FPS.AI
                 case AIState.Follow:
                     m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
                     m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.OrientWeaponsTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    break;
-                case AIState.Attack:
-                    if (Vector3.Distance(m_EnemyController.KnownDetectedTarget.transform.position,
-                            m_EnemyController.DetectionModule.DetectionSourcePoint.position)
-                        >= (AttackStopDistanceRatio * m_EnemyController.DetectionModule.AttackRange))
-                    {
-                        m_EnemyController.SetNavDestination(m_EnemyController.KnownDetectedTarget.transform.position);
-                    }
-                    else
-                    {
-                        m_EnemyController.SetNavDestination(transform.position);
-                    }
-
-                    m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
-                    m_EnemyController.TryAtack(m_EnemyController.KnownDetectedTarget.transform.position);
                     break;
             }
-        }
-
-        void OnAttack()
-        {
-            Animator.SetTrigger(k_AnimAttackParameter);
         }
 
         void OnDetectedTarget()
         {
-            if (AiState == AIState.Patrol)
+            if(AiState== AIState.Patrol)
             {
                 AiState = AIState.Follow;
             }
-
-            for (int i = 0; i < OnDetectVfx.Length; i++)
+            /*for (int i = 0; i < OnDetectVfx.Length; i++)
             {
                 OnDetectVfx[i].Play();
-            }
-
+            }*/
             if (OnDetectSfx)
             {
                 AudioUtility.CreateSFX(OnDetectSfx, transform.position, AudioUtility.AudioGroups.EnemyDetection, 1f);
@@ -159,15 +115,15 @@ namespace Unity.FPS.AI
 
         void OnLostTarget()
         {
-            if (AiState == AIState.Follow || AiState == AIState.Attack)
+            if (AiState == AIState.Follow )
             {
                 AiState = AIState.Patrol;
             }
 
-            for (int i = 0; i < OnDetectVfx.Length; i++)
+            /*for (int i = 0; i < OnDetectVfx.Length; i++)
             {
                 OnDetectVfx[i].Stop();
-            }
+            }*/
 
             Animator.SetBool(k_AnimAlertedParameter, false);
         }
@@ -184,3 +140,4 @@ namespace Unity.FPS.AI
         }
     }
 }
+

@@ -16,6 +16,8 @@ namespace Unity.FPS.Game
         public static AmmoPickupEvent AmmoPickupEvent = new AmmoPickupEvent();
         public static DamageEvent DamageEvent = new DamageEvent();
         public static DisplayMessageEvent DisplayMessageEvent = new DisplayMessageEvent();
+
+        public static ObjectiveCompletedEvent ObjectiveCompletedEvent = new ObjectiveCompletedEvent();
     }
 
     public class ObjectiveUpdateEvent : GameEvent
@@ -28,6 +30,8 @@ namespace Unity.FPS.Game
     }
 
     public class AllObjectivesCompletedEvent : GameEvent { }
+
+    public class ObjectiveCompletedEvent : GameEvent { }
 
     public class GameOverEvent : GameEvent
     {

@@ -38,7 +38,7 @@ namespace Unity.FPS.Gameplay
             m_StartPosition = transform.position;
         }
 
-        void Update()
+        protected virtual void Update()
         {
             // Handle bobbing
             float bobbingAnimationPhase = ((Mathf.Sin(Time.time * VerticalBobFrequency) * 0.5f) + 0.5f) * BobbingAmount;
@@ -54,6 +54,7 @@ namespace Unity.FPS.Gameplay
 
             if (pickingPlayer != null)
             {
+
                 OnPicked(pickingPlayer);
 
                 PickupEvent evt = Events.PickupEvent;
