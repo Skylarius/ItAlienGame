@@ -3220,6 +3220,27 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1945443572}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2032296065 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4778346530247736300, guid: c1f95b2a073069e4091731002c38a3df,
+    type: 3}
+  m_PrefabInstance: {fileID: 2729281214287269654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2032296071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032296065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b184044c5155814897d0e05ea011425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skyboxMaterial: {fileID: 2100000, guid: 97477fbf4ee39c94594d20f24fb36c44, type: 2}
+  worstSkyTint: {r: 0.7735849, g: 0.33935562, b: 0.33935562, a: 1}
+  exposureDegrade: 0.05
 --- !u!223 &118020986953914012
 Canvas:
   m_ObjectHideFlags: 0
@@ -3856,7 +3877,7 @@ GameObject:
   - component: {fileID: 1614318204881463007}
   - component: {fileID: 9087143435531696375}
   - component: {fileID: 9087143435531696374}
-  - component: {fileID: 9087143435531696373}
+  - component: {fileID: 9087143435531696377}
   m_Layer: 0
   m_Name: Ally_ShinyHoverBot
   m_TagString: Untagged
@@ -4861,6 +4882,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1319141450}
+    - targetCorrespondingSourceObject: {fileID: 4778346530247736300, guid: c1f95b2a073069e4091731002c38a3df,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2032296071}
   m_SourcePrefab: {fileID: 100100000, guid: c1f95b2a073069e4091731002c38a3df, type: 3}
 --- !u!1001 &2729281214355838732
 PrefabInstance:
@@ -6569,6 +6594,7 @@ MonoBehaviour:
   PathReachingRadius: 20000
   OrientationSpeed: 10
   DeathDuration: 0
+  EnemyRelevance: 0
   SwapToNextWeapon: 0
   DelayAfterWeaponSwap: 0
   EyeColorMaterial: {fileID: 2100000, guid: e6fdfd4e017234d43ac116abee8fa90a, type: 2}
@@ -6616,24 +6642,6 @@ MonoBehaviour:
   PathReachingRangeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   DetectionRangeColor: {r: 0, g: 0, b: 1, a: 1}
---- !u!114 &9087143435531696373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015434656195993096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 828abdfaec1bdff4dbda622331d65ba5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  VerticalBobFrequency: 0
-  BobbingAmount: 0
-  RotatingSpeed: 0
-  PickupSfx: {fileID: 0}
-  PickupVfxPrefab: {fileID: 0}
-  HealAmount: 40
 --- !u!54 &9087143435531696374
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6680,7 +6688,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.75
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!114 &9087143435531696376
 MonoBehaviour:
@@ -6702,6 +6710,24 @@ MonoBehaviour:
   PitchDistortionMovementSpeed:
     Min: 1
     Max: 1.5
+--- !u!114 &9087143435531696377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015434656195993096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8376db5c167a2847ae89b28be58b40f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VerticalBobFrequency: 0
+  BobbingAmount: 0
+  RotatingSpeed: 0
+  PickupSfx: {fileID: 0}
+  PickupVfxPrefab: {fileID: 0}
+  HealAmount: 40
 --- !u!1 &9200139263057522508
 GameObject:
   m_ObjectHideFlags: 0
