@@ -80,7 +80,7 @@ namespace Unity.FPS.Gameplay
         public UnityAction<WeaponController, int> OnAddedWeapon;
         public UnityAction<WeaponController, int> OnRemovedWeapon;
 
-        WeaponController[] m_WeaponSlots = new WeaponController[9]; // 9 available weapon slots
+        WeaponController[] m_WeaponSlots = new WeaponController[2]; // 2 available weapon slots
         PlayerInputHandler m_InputHandler;
         PlayerCharacterController m_PlayerCharacterController;
         float m_WeaponBobFactor;
