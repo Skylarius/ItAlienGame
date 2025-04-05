@@ -35,6 +35,9 @@ namespace Unity.FPS.AI
         [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
         public float DeathDuration = 0f;
 
+        [Tooltip("SPAGHETTI INVASION: Enable Attack")]
+        public bool EnableAttack = true;
+
         [Header("Behavior Parameters")]
         [Tooltip("Determs if this Enemy relevant to EnemyCount or not")]
         public bool EnemyRelevance = true;
