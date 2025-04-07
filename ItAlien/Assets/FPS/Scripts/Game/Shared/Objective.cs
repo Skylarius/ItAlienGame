@@ -41,7 +41,11 @@ namespace Unity.FPS.Game
 
             if (soundTrack != null)
             {
-                GameObject.FindFirstObjectByType<MusicManager>().ChangeTrack(soundTrack);
+                MusicManager musicManager = GameObject.FindFirstObjectByType<MusicManager>();
+                if (musicManager != null)
+                {
+                    musicManager.ChangeTrack(soundTrack);
+                }
             }
         }
 
