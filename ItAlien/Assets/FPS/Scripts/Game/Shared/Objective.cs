@@ -41,9 +41,6 @@ namespace Unity.FPS.Game
 
             if (soundTrack != null)
             {
-                //SetUpAudioSource();
-                //audioSource.Play();
-                //StartCoroutine(FadeAudio(5f,1f));
                 GameObject.FindFirstObjectByType<MusicManager>().ChangeTrack(soundTrack);
             }
         }
@@ -73,36 +70,7 @@ namespace Unity.FPS.Game
 
             OnObjectiveCompleted?.Invoke(this);
             
-            /*if (audioSource.enabled)
-            {
-                //audioSource.outputAudioMixerGroup = AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.Music2);
-                //StartCoroutine(FadeAudio(5f, 0f));
-            }*/
         }
 
-        /*void SetUpAudioSource()
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.outputAudioMixerGroup = AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.Music1);
-            audioSource.clip = soundTrack;
-            audioSource.volume = 0.0f;
-            audioSource.loop = true;
-        }
-
-        IEnumerator FadeAudio(float time,float value)
-        {
-            float startVolume = audioSource.volume;
-            float t = 0.0f;
-            while (audioSource.volume != value)
-            {
-                yield return new WaitForFixedUpdate();
-                t += Time.fixedDeltaTime;
-                audioSource.volume = Mathf.Lerp(startVolume, value, t / time);
-                Debug.Log(gameObject.name + "::FadeAudio to "+value+" -> " + audioSource.volume);
-
-            }
-            if (audioSource.volume <= 0)
-                audioSource.Stop();
-        }*/
     }
 }
