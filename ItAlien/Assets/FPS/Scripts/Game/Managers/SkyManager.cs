@@ -14,6 +14,8 @@ namespace Unity.FPS.Game
         public Color worstSkyTint;
         [Tooltip("Exposure degrade")]
         public float exposureDegrade;
+        [Tooltip("Time for Sky Transiction ")]
+        public float timeTransiction;
 
         Material currentSkyboxMaterial;
         // Start is called before the first frame update
@@ -30,10 +32,22 @@ namespace Unity.FPS.Game
 
         public void UpdateSky()
         {
-            Debug.Log("SkyManager::UpdateSky");
-            RenderSettings.skybox.SetFloat("_Exposure", RenderSettings.skybox.GetFloat("_Exposure") - exposureDegrade);
-            RenderSettings.skybox.SetColor("_Tint", Color.Lerp(RenderSettings.skybox.GetColor("_Tint"), worstSkyTint, 0.1f));
+            StartCoroutine(SkyTransiction());
+        }
 
+        IEnumerator SkyTransiction()
+        {
+            float currentTime = 0f;
+            float startingExposure = RenderSettings.skybox.GetFloat("_Exposure");
+            Color startingColor = RenderSettings.skybox.GetColor("_Tint");
+            Color desiredColor = Color.Lerp(RenderSettings.skybox.GetColor("_Tint"), worstSkyTint, 0.2f);
+            while (timeTransiction > currentTime)
+            {
+                yield return new WaitForFixedUpdate();
+                currentTime += Time.fixedDeltaTime;
+                RenderSettings.skybox.SetFloat("_Exposure", Mathf.Lerp(startingExposure, startingExposure- exposureDegrade,currentTime/timeTransiction));
+                RenderSettings.skybox.SetColor("_Tint", Color.Lerp(startingColor, desiredColor, currentTime / timeTransiction));
+            }
         }
     }
 }
