@@ -15,115 +15,76 @@ namespace Unity.FPS.Game
     [System.Serializable]
     public struct CrosshairData
     {
-        [Tooltip("The image that will be used for this weapon's crosshair")]
         public Sprite CrosshairSprite;
-
-        [Tooltip("The size of the crosshair image")]
         public int CrosshairSize;
-
-        [Tooltip("The color of the crosshair image")]
         public Color CrosshairColor;
     }
 
     [RequireComponent(typeof(AudioSource))]
     public class WeaponController : MonoBehaviour
     {
-        [Header("Information")] [Tooltip("The name that will be displayed in the UI for this weapon")]
+        [Header("Information")]
         public string WeaponName;
-
-        [Tooltip("The image that will be displayed in the UI for this weapon")]
         public Sprite WeaponIcon;
-
-        [Tooltip("Default data for the crosshair")]
         public CrosshairData CrosshairDataDefault;
-
-        [Tooltip("Data for the crosshair when targeting an enemy")]
         public CrosshairData CrosshairDataTargetInSight;
 
         [Header("Internal References")]
-        [Tooltip("The root object for the weapon, this is what will be deactivated when the weapon isn't active")]
         public GameObject WeaponRoot;
-
-        [Tooltip("Tip of the weapon, where the projectiles are shot")]
         public Transform WeaponMuzzle;
 
-        [Header("Shoot Parameters")] [Tooltip("The type of weapon wil affect how it shoots")]
+        [Header("Shoot Parameters")]
         public WeaponShootType ShootType;
-
-        [Tooltip("The projectile prefab")] public ProjectileBase ProjectilePrefab;
-
-        [Tooltip("Minimum duration between two shots")]
+        public ProjectileBase ProjectilePrefab;
         public float DelayBetweenShots = 0.5f;
-
-        [Tooltip("Angle for the cone in which the bullets will be shot randomly (0 means no spread at all)")]
         public float BulletSpreadAngle = 0f;
-
-        [Tooltip("Amount of bullets per shot")]
         public int BulletsPerShot = 1;
-
-        [Tooltip("Force that will push back the weapon after each shot")] [Range(0f, 2f)]
+        [Range(0f, 2f)]
         public float RecoilForce = 1;
-
-        [Tooltip("Ratio of the default FOV that this weapon applies while aiming")] [Range(0f, 1f)]
+        [Range(0f, 1f)]
         public float AimZoomRatio = 1f;
-
-        [Tooltip("Translation to apply to weapon arm when aiming with this weapon")]
         public Vector3 AimOffset;
 
+        [Header("Melee Parameters")]
+        public float MeleeDamage = 25f;
+        public float MeleeRadius = 1.5f;
+        public LayerMask MeleeHitLayer;
+        public AudioClip MeleeSwingSound;
+        public AudioClip MeleeHitSound;
+
+        [Header("Throwable Weapon Parameters")]
+        public float ThrowForce = 30f;
+        public float ThrowDamage = 500f;
+        public float ThrowTorque = 10f;
+        public AudioClip ThrowSound;
+
         [Header("Ammo Parameters")]
-        [Tooltip("Should the player manually reload")]
         public bool AutomaticReload = true;
-        [Tooltip("Has physical clip on the weapon and ammo shells are ejected when firing")]
         public bool HasPhysicalBullets = false;
-        [Tooltip("Number of bullets in a clip")]
         public int ClipSize = 30;
-        [Tooltip("Bullet Shell Casing")]
         public GameObject ShellCasing;
-        [Tooltip("Weapon Ejection Port for physical ammo")]
         public Transform EjectionPort;
-        [Tooltip("Force applied on the shell")]
-        [Range(0.0f, 5.0f)] public float ShellCasingEjectionForce = 2.0f;
-        [Tooltip("Maximum number of shell that can be spawned before reuse")]
-        [Range(1, 30)] public int ShellPoolSize = 1;
-        [Tooltip("Amount of ammo reloaded per second")]
+        [Range(0.0f, 5.0f)]
+        public float ShellCasingEjectionForce = 2.0f;
+        [Range(1, 30)]
+        public int ShellPoolSize = 1;
         public float AmmoReloadRate = 1f;
-
-        [Tooltip("Delay after the last shot before starting to reload")]
         public float AmmoReloadDelay = 2f;
-
-        [Tooltip("Maximum amount of ammo in the gun")]
         public int MaxAmmo = 8;
 
         [Header("Charging parameters (charging weapons only)")]
-        [Tooltip("Trigger a shot when maximum charge is reached")]
         public bool AutomaticReleaseOnCharged;
-
-        [Tooltip("Duration to reach maximum charge")]
         public float MaxChargeDuration = 2f;
-
-        [Tooltip("Initial ammo used when starting to charge")]
         public float AmmoUsedOnStartCharge = 1f;
-
-        [Tooltip("Additional ammo used when charge reaches its maximum")]
         public float AmmoUsageRateWhileCharging = 1f;
 
-        [Header("Audio & Visual")] 
-        [Tooltip("Optional weapon animator for OnShoot animations")]
+        [Header("Audio & Visual")]
         public Animator WeaponAnimator;
-
-        [Tooltip("Prefab of the muzzle flash")]
         public GameObject MuzzleFlashPrefab;
-
-        [Tooltip("Unparent the muzzle flash instance on spawn")]
         public bool UnparentMuzzleFlash;
-
-        [Tooltip("sound played when shooting")]
         public AudioClip ShootSfx;
-
-        [Tooltip("Sound played when changing to this weapon")]
         public AudioClip ChangeWeaponSfx;
-
-        [Tooltip("Continuous Shooting Sound")] public bool UseContinuousShootSound = false;
+        public bool UseContinuousShootSound = false;
         public AudioClip ContinuousShootStartSfx;
         public AudioClip ContinuousShootLoopSfx;
         public AudioClip ContinuousShootEndSfx;
@@ -160,8 +121,10 @@ namespace Unity.FPS.Game
         public bool IsReloading { get; private set; }
 
         const string k_AnimAttackParameter = "Attack";
+        const string k_AnimMeleeAttackParameter = "MeleeAttack";
 
         private Queue<Rigidbody> m_PhysicalAmmoPool;
+        private bool isMeleeAttacking = false;
 
         void Awake()
         {
@@ -214,7 +177,6 @@ namespace Unity.FPS.Game
 
         void PlaySFX(AudioClip sfx) => AudioUtility.CreateSFX(sfx, transform.position, AudioUtility.AudioGroups.WeaponShoot, 0.0f);
 
-
         void Reload()
         {
             if (m_CarriedPhysicalBullets > 0)
@@ -245,18 +207,47 @@ namespace Unity.FPS.Game
                 MuzzleWorldVelocity = (WeaponMuzzle.position - m_LastMuzzlePosition) / Time.deltaTime;
                 m_LastMuzzlePosition = WeaponMuzzle.position;
             }
+
+            if (isMeleeAttacking)
+            {
+                CheckMeleeHits();
+            }
+        }
+
+        void CheckMeleeHits()
+        {
+            Collider[] hits = Physics.OverlapSphere(WeaponMuzzle.position, MeleeRadius, MeleeHitLayer);
+            foreach (Collider hit in hits)
+            {
+                if (hit.gameObject != Owner)
+                {
+                    Health health = hit.GetComponentInParent<Health>();
+                    if (health != null)
+                    {
+                        health.TakeDamage(MeleeDamage, Owner);
+
+                        if (MeleeHitSound)
+                        {
+                            m_ShootAudioSource.PlayOneShot(MeleeHitSound);
+                        }
+                    }
+                }
+            }
         }
 
         void UpdateAmmo()
         {
+            if (gameObject.CompareTag("melee"))
+            {
+                m_CurrentAmmo = MaxAmmo;
+                CurrentAmmoRatio = 1f;
+                return;
+            }
+
             if (AutomaticReload && m_LastTimeShot + AmmoReloadDelay < Time.time && m_CurrentAmmo < MaxAmmo && !IsCharging)
             {
-                // reloads weapon over time
                 m_CurrentAmmo += AmmoReloadRate * Time.deltaTime;
-
-                // limits ammo to max value
                 m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, MaxAmmo);
-
                 IsCooling = true;
             }
             else
@@ -281,8 +272,6 @@ namespace Unity.FPS.Game
                 if (CurrentCharge < 1f)
                 {
                     float chargeLeft = 1f - CurrentCharge;
-
-                    // Calculate how much charge ratio to add this frame
                     float chargeAdded = 0f;
                     if (MaxChargeDuration <= 0f)
                     {
@@ -294,15 +283,10 @@ namespace Unity.FPS.Game
                     }
 
                     chargeAdded = Mathf.Clamp(chargeAdded, 0f, chargeLeft);
-
-                    // See if we can actually add this charge
                     float ammoThisChargeWouldRequire = chargeAdded * AmmoUsageRateWhileCharging;
                     if (ammoThisChargeWouldRequire <= m_CurrentAmmo)
                     {
-                        // Use ammo based on charge added
                         UseAmmo(ammoThisChargeWouldRequire);
-
-                        // set current charge ratio
                         CurrentCharge = Mathf.Clamp01(CurrentCharge + chargeAdded);
                     }
                 }
@@ -353,54 +337,167 @@ namespace Unity.FPS.Game
         public bool HandleShootInputs(bool inputDown, bool inputHeld, bool inputUp)
         {
             m_WantsToShoot = inputDown || inputHeld;
-            switch (ShootType)
+
+            if (gameObject.CompareTag("melee") && inputDown)
             {
-                case WeaponShootType.Manual:
-                    if (inputDown)
-                    {
-                        return TryShoot();
-                    }
-
-                    return false;
-
-                case WeaponShootType.Automatic:
-                    if (inputHeld)
-                    {
-                        return TryShoot();
-                    }
-
-                    return false;
-
-                case WeaponShootType.Charge:
-                    if (inputHeld)
-                    {
-                        TryBeginCharge();
-                    }
-
-                    // Check if we released charge or if the weapon shoot autmatically when it's fully charged
-                    if (inputUp || (AutomaticReleaseOnCharged && CurrentCharge >= 1f))
-                    {
-                        return TryReleaseCharge();
-                    }
-
-                    return false;
-
-                default:
-                    return false;
+                return TryMeleeAttack();
             }
+            else if (gameObject.CompareTag("long") && inputDown)
+            {
+                return TryThrowWeapon();
+            }
+            else if (!gameObject.CompareTag("long"))
+            {
+                switch (ShootType)
+                {
+                    case WeaponShootType.Manual:
+                        if (inputDown)
+                        {
+                            return TryShoot();
+                        }
+                        return false;
+
+                    case WeaponShootType.Automatic:
+                        if (inputHeld)
+                        {
+                            return TryShoot();
+                        }
+                        return false;
+
+                    case WeaponShootType.Charge:
+                        if (inputHeld)
+                        {
+                            TryBeginCharge();
+                        }
+                        if (inputUp || (AutomaticReleaseOnCharged && CurrentCharge >= 1f))
+                        {
+                            return TryReleaseCharge();
+                        }
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+
+            return false;
         }
 
-        bool TryShoot()
+        bool TryMeleeAttack()
         {
-            if (m_CurrentAmmo >= 1f
-                && m_LastTimeShot + DelayBetweenShots < Time.time)
+            if (m_LastTimeShot + DelayBetweenShots < Time.time)
             {
-                HandleShoot();
-                m_CurrentAmmo -= 1f;
+                if (WeaponAnimator)
+                {
+                    WeaponAnimator.SetTrigger(k_AnimMeleeAttackParameter);
+                }
+
+                if (MeleeSwingSound)
+                {
+                    m_ShootAudioSource.PlayOneShot(MeleeSwingSound);
+                }
+
+                isMeleeAttacking = true;
+                m_LastTimeShot = Time.time;
+
+                Invoke("EndMeleeAttack", 0.5f);
+
+                OnShoot?.Invoke();
+                OnShootProcessed?.Invoke();
 
                 return true;
             }
 
+            return false;
+        }
+
+        bool TryThrowWeapon()
+        {
+            if (m_LastTimeShot + DelayBetweenShots < Time.time)
+            {
+                if (ThrowSound)
+                {
+                    m_ShootAudioSource.PlayOneShot(ThrowSound);
+                }
+
+                ThrowCurrentWeapon();
+
+                OnShoot?.Invoke();
+                OnShootProcessed?.Invoke();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        void ThrowCurrentWeapon()
+        {
+            GameObject thrownWeapon = Instantiate(gameObject, WeaponMuzzle.position, WeaponMuzzle.rotation);
+
+            // Disabilita il WeaponController invece di distruggerlo
+            WeaponController weaponController = thrownWeapon.GetComponent<WeaponController>();
+            if (weaponController)
+            {
+                weaponController.enabled = false;
+            }
+
+            if (!thrownWeapon.GetComponent<Collider>())
+            {
+                thrownWeapon.AddComponent<BoxCollider>();
+            }
+
+            Rigidbody rb = thrownWeapon.GetComponent<Rigidbody>();
+            if (!rb)
+            {
+                rb = thrownWeapon.AddComponent<Rigidbody>();
+            }
+
+            rb.isKinematic = false;
+            rb.useGravity = true;
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+            Camera playerCamera = Camera.main;
+            if (playerCamera)
+            {
+                rb.AddForce(playerCamera.transform.forward * ThrowForce, ForceMode.Impulse);
+                rb.AddTorque(UnityEngine.Random.insideUnitSphere * ThrowTorque, ForceMode.Impulse);
+            }
+
+            ThrownWeaponBehaviour throwBehaviour = thrownWeapon.AddComponent<ThrownWeaponBehaviour>();
+            throwBehaviour.Damage = ThrowDamage;
+            throwBehaviour.Owner = Owner;
+            throwBehaviour.HitLayers = MeleeHitLayer; // Usa lo stesso layer delle armi melee
+
+            var components = Owner.GetComponents<MonoBehaviour>();
+            foreach (var component in components)
+            {
+                var method = component.GetType().GetMethod("RemoveWeapon");
+                if (method != null && method.GetParameters().Length == 1)
+                {
+                    method.Invoke(component, new object[] { this });
+                    break;
+                }
+            }
+
+            ShowWeapon(false);
+
+            Destroy(thrownWeapon, 10f);
+        }
+
+        void EndMeleeAttack()
+        {
+            isMeleeAttacking = false;
+        }
+
+        bool TryShoot()
+        {
+            if (m_CurrentAmmo >= 1f && m_LastTimeShot + DelayBetweenShots < Time.time)
+            {
+                HandleShoot();
+                m_CurrentAmmo -= 1f;
+                return true;
+            }
             return false;
         }
 
@@ -412,13 +509,10 @@ namespace Unity.FPS.Game
                 && m_LastTimeShot + DelayBetweenShots < Time.time)
             {
                 UseAmmo(AmmoUsedOnStartCharge);
-
                 LastChargeTriggerTimestamp = Time.time;
                 IsCharging = true;
-
                 return true;
             }
-
             return false;
         }
 
@@ -427,13 +521,10 @@ namespace Unity.FPS.Game
             if (IsCharging)
             {
                 HandleShoot();
-
                 CurrentCharge = 0f;
                 IsCharging = false;
-
                 return true;
             }
-
             return false;
         }
 
@@ -443,7 +534,6 @@ namespace Unity.FPS.Game
                 ? Mathf.CeilToInt(CurrentCharge * BulletsPerShot)
                 : BulletsPerShot;
 
-            // spawn all bullets with random direction
             for (int i = 0; i < bulletsPerShotFinal; i++)
             {
                 Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
@@ -452,17 +542,14 @@ namespace Unity.FPS.Game
                 newProjectile.Shoot(this);
             }
 
-            // muzzle flash
             if (MuzzleFlashPrefab != null)
             {
                 GameObject muzzleFlashInstance = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position,
                     WeaponMuzzle.rotation, WeaponMuzzle.transform);
-                // Unparent the muzzleFlashInstance
                 if (UnparentMuzzleFlash)
                 {
                     muzzleFlashInstance.transform.SetParent(null);
                 }
-
                 Destroy(muzzleFlashInstance, 2f);
             }
 
@@ -474,13 +561,11 @@ namespace Unity.FPS.Game
 
             m_LastTimeShot = Time.time;
 
-            // play shoot SFX
             if (ShootSfx && !UseContinuousShootSound)
             {
                 m_ShootAudioSource.PlayOneShot(ShootSfx);
             }
 
-            // Trigger attack animation if there is any
             if (WeaponAnimator)
             {
                 WeaponAnimator.SetTrigger(k_AnimAttackParameter);

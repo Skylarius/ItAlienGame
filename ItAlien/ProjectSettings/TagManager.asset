@@ -5,15 +5,18 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerWalls
+  - melee
+  - long
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Terrain
   - Water
   - UI
   - Player
-  - 
+  - Enemies
   - PostProcessing
   - 
   - FirstPersonWeapon
