@@ -310,6 +310,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -674,6 +679,7 @@ MonoBehaviour:
   Description: Raggiungi la nuova parte della spiaggia
   IsOptional: 0
   DelayVisible: 0
+  soundTrack: {fileID: 0}
   DestroyRoot: {fileID: 0}
 --- !u!33 &178634811
 MeshFilter:
@@ -1490,6 +1496,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -1869,6 +1880,7 @@ MonoBehaviour:
   Description: Raggiungi la nuova parte della spiaggia
   IsOptional: 0
   DelayVisible: 0
+  soundTrack: {fileID: 0}
   DestroyRoot: {fileID: 0}
 --- !u!33 &472565056
 MeshFilter:
@@ -2202,6 +2214,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -2378,6 +2395,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -3477,6 +3499,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -3918,6 +3945,7 @@ MonoBehaviour:
   Description: Raggiungi la nuova parte della spiaggia
   IsOptional: 0
   DelayVisible: 0
+  soundTrack: {fileID: 0}
   DestroyRoot: {fileID: 0}
 --- !u!1001 &902205008
 PrefabInstance:
@@ -4066,6 +4094,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -4350,6 +4383,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -4773,6 +4811,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -5037,6 +5080,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -5949,6 +5997,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -6248,6 +6301,7 @@ MonoBehaviour:
   Description: Raggiungi la nuova parte della spiaggia
   IsOptional: 0
   DelayVisible: 0
+  soundTrack: {fileID: 0}
   DestroyRoot: {fileID: 0}
 --- !u!33 &1343217968
 MeshFilter:
@@ -6472,6 +6526,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -8213,6 +8272,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -8663,6 +8727,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -8839,6 +8908,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -9193,6 +9267,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -9466,6 +9545,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -9650,6 +9734,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
+      propertyPath: DropRate
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
       propertyPath: EnableAttack
       value: 0
       objectReference: {fileID: 0}
@@ -9831,6 +9920,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -10463,6 +10557,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -11619,6 +11718,7 @@ MonoBehaviour:
   skyboxMaterial: {fileID: 2100000, guid: 97477fbf4ee39c94594d20f24fb36c44, type: 2}
   worstSkyTint: {r: 0.7169812, g: 0.39569244, b: 0.39569244, a: 0}
   exposureDegrade: 0.05
+  timeTransiction: 1.5
 --- !u!1001 &2729281214355838732
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11766,6 +11866,11 @@ PrefabInstance:
         type: 3}
       propertyPath: DetectionRange
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: DropRate
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9087143436424816424, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}

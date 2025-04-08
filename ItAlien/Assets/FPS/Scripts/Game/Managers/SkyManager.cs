@@ -13,7 +13,7 @@ namespace Unity.FPS.Game
         [Tooltip("Towards Tint")]
         public Color worstSkyTint;
         [Tooltip("Exposure degrade")]
-        public float exposureDegrade = 0.008f;;
+        public float exposureDegrade = 0.008f;
         [Tooltip("Time for Sky Transiction ")]
         public float timeTransiction=1.5f;
 
