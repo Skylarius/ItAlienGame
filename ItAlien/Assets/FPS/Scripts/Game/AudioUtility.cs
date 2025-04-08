@@ -9,6 +9,8 @@ namespace Unity.FPS.Game
 
         public enum AudioGroups
         {
+            Music1,
+            Music2,
             DamageTick,
             Impact,
             EnemyDetection,
@@ -72,6 +74,27 @@ namespace Unity.FPS.Game
                 s_AudioManager = GameObject.FindObjectOfType<AudioManager>();
 
             s_AudioManager.GetFloat("MasterVolume", out var valueInDb);
+            return Mathf.Pow(10f, valueInDb / 20.0f);
+        }
+
+        public static void SetMusicVolume(string name,float value)
+        {
+            if (s_AudioManager == null)
+                s_AudioManager = GameObject.FindObjectOfType<AudioManager>();
+
+            if (value <= 0)
+                value = 0.001f;
+            float valueInDb = Mathf.Log10(value) * 20;
+
+            s_AudioManager.SetFloat(name, valueInDb);
+        }
+
+        public static float GetVolume(string name)
+        {
+            if (s_AudioManager == null)
+                s_AudioManager = GameObject.FindObjectOfType<AudioManager>();
+
+            s_AudioManager.GetFloat(name, out var valueInDb);
             return Mathf.Pow(10f, valueInDb / 20.0f);
         }
     }

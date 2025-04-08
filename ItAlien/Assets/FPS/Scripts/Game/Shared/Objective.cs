@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Audio;
+using System.Collections;
 
 namespace Unity.FPS.Game
 {
@@ -17,11 +19,16 @@ namespace Unity.FPS.Game
         [Tooltip("Delay before the objective becomes visible")]
         public float DelayVisible;
 
+        [Tooltip("SoundTrack to play during objective")]
+        public AudioClip soundTrack;
+
         public bool IsCompleted { get; private set; }
         public bool IsBlocking() => !(IsOptional || IsCompleted);
 
         public static event Action<Objective> OnObjectiveCreated;
         public static event Action<Objective> OnObjectiveCompleted;
+
+        AudioSource audioSource;
 
         protected virtual void Start()
         {
@@ -31,6 +38,15 @@ namespace Unity.FPS.Game
             displayMessage.Message = Title;
             displayMessage.DelayBeforeDisplay = 0.0f;
             EventManager.Broadcast(displayMessage);
+
+            if (soundTrack != null)
+            {
+                MusicManager musicManager = GameObject.FindFirstObjectByType<MusicManager>();
+                if (musicManager != null)
+                {
+                    musicManager.ChangeTrack(soundTrack);
+                }
+            }
         }
 
         public void UpdateObjective(string descriptionText, string counterText, string notificationText)
@@ -57,6 +73,8 @@ namespace Unity.FPS.Game
             EventManager.Broadcast(evt);
 
             OnObjectiveCompleted?.Invoke(this);
+            
         }
+
     }
 }
