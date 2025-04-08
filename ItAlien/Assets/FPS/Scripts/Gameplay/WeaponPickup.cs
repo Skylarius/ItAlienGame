@@ -12,7 +12,6 @@ namespace Unity.FPS.Gameplay
         {
             base.Start();
 
-            // Set all children layers to default (to prefent seeing weapons through meshes)
             foreach (Transform t in GetComponentsInChildren<Transform>())
             {
                 if (t != transform)
@@ -27,7 +26,6 @@ namespace Unity.FPS.Gameplay
             {
                 if (playerWeaponsManager.AddWeapon(WeaponPrefab))
                 {
-                    // Handle auto-switching to weapon if no weapons currently
                     if (playerWeaponsManager.GetActiveWeapon() == null)
                     {
                         playerWeaponsManager.SwitchWeapon(true);

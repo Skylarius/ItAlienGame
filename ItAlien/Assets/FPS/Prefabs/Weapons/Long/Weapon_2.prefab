@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 5816701098083892858}
   m_Layer: 0
   m_Name: Weapon_2
-  m_TagString: Untagged
+  m_TagString: long
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,6 +205,17 @@ MonoBehaviour:
   RecoilForce: 1
   AimZoomRatio: 0.5
   AimOffset: {x: 0, y: 0.075, z: 0}
+  MeleeDamage: 25
+  MeleeRadius: 1.5
+  MeleeHitLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  MeleeSwingSound: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
+  MeleeHitSound: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
+  ThrowForce: 10
+  ThrowDamage: 50
+  ThrowTorque: 1
+  ThrowSound: {fileID: 0}
   AutomaticReload: 1
   HasPhysicalBullets: 0
   ClipSize: 30
@@ -488,6 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11aae8979423d224ba755c4f85685dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupRange: 2
+  maxWeapons: 2
 --- !u!1 &2867801751256125023
 GameObject:
   m_ObjectHideFlags: 0
