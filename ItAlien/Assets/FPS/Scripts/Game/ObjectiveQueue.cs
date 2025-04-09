@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands;
 using Codice.Client.Common;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,6 +80,28 @@ namespace Unity.FPS.Game
     }
 
     [System.Serializable]
+    public struct ObjectAndPosition
+    {
+        public GameObject Object;
+        public Vector3 Position;
+    }
+
+    [System.Serializable]
+    public class MoveObjects : IObjectiveAction
+    {
+        [Header("MoveObjects")]
+        public List<ObjectAndPosition> ObjectsAndNewPositions;
+
+        public void ObjectiveEnabled()
+        {
+            foreach (ObjectAndPosition obj in ObjectsAndNewPositions)
+            {
+                obj.Object.transform.position = obj.Position;
+            }
+        }
+    }
+
+    [System.Serializable]
     public struct ObjectiveGameObjectsListWrapper
     {
         public GameObject Objective;
@@ -120,7 +143,7 @@ namespace Unity.FPS.Game
                 {
                     if (Wrapper.Actions[i] == null || Wrapper.Actions[i].GetType() == typeof(IObjectiveAction))
                     {
-                        switch(Random.Range(0,3))
+                        switch(Random.Range(0,4))
                         {
                             case 0:
                                 Wrapper.Actions[i] = new SpawnObjectsInRange();
@@ -130,6 +153,9 @@ namespace Unity.FPS.Game
                                 break;
                             case 2:
                                 Wrapper.Actions[i] = new DisableObjects();
+                                break;
+                            case 3:
+                                Wrapper.Actions[i] = new MoveObjects();
                                 break;
                         }
                     }
