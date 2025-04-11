@@ -4,6 +4,7 @@ public class WeaponLookAt : MonoBehaviour
 {
     private Camera mainCamera;
     [SerializeField] private bool lookOnlyY = true;
+    [SerializeField] private float CustomXRotation = 0;
     [SerializeField] private float rotationSpeed = 5f;
 
     void Start()
@@ -32,6 +33,10 @@ public class WeaponLookAt : MonoBehaviour
             {
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                if (CustomXRotation != 0) 
+                { 
+                    transform.eulerAngles = new Vector3(CustomXRotation, transform.eulerAngles.y, transform.eulerAngles.z);
+                }
             }
         }
     }

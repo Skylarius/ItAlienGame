@@ -1,8 +1,5 @@
-using Codice.Client.BaseCommands;
-using Codice.Client.Common;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Unity.FPS.Game
@@ -10,6 +7,8 @@ namespace Unity.FPS.Game
     public interface IObjectiveAction
     {
         public void ObjectiveEnabled();
+
+        public IEnumerator ObjectiveEnabledCoroutine();
     }
 
     [System.Serializable]
@@ -47,6 +46,11 @@ namespace Unity.FPS.Game
                 NewGameObject.SetActive(true);
             }
         }
+
+        public IEnumerator ObjectiveEnabledCoroutine()
+        {
+            yield return null;
+        }
     }
 
     [System.Serializable]
@@ -62,6 +66,11 @@ namespace Unity.FPS.Game
                 obj.SetActive(true);
             }
         }
+
+        public IEnumerator ObjectiveEnabledCoroutine()
+        {
+            yield return null;
+        }
     }
 
     [System.Serializable]
@@ -76,6 +85,10 @@ namespace Unity.FPS.Game
             {
                 obj.SetActive(false);
             }
+        }
+        public IEnumerator ObjectiveEnabledCoroutine()
+        {
+            yield return null;
         }
     }
 
@@ -94,12 +107,25 @@ namespace Unity.FPS.Game
 
         public void ObjectiveEnabled()
         {
+            return;
+        }
+
+        public IEnumerator ObjectiveEnabledCoroutine()
+        {
             foreach (ObjectAndPosition obj in ObjectsAndNewPositions)
             {
-                obj.Object.transform.position = obj.Position;
+                int t = 0;
+                while (Vector3.Distance(obj.Object.transform.position,obj.Position) > 1 && t < 100)
+                {
+                    obj.Object.transform.position = Vector3.Lerp(obj.Object.transform.position, obj.Position, 0.8f);
+                    t++;
+                    yield return new WaitForEndOfFrame();
+                }
             }
         }
     }
+
+
 
     [System.Serializable]
     public struct ObjectiveGameObjectsListWrapper
@@ -177,6 +203,7 @@ namespace Unity.FPS.Game
             foreach (IObjectiveAction Action in newObjective.Actions)
             {
                 Action.ObjectiveEnabled();
+                StartCoroutine(Action.ObjectiveEnabledCoroutine());
             }
         }
     }
