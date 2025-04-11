@@ -16,8 +16,16 @@ namespace Unity.FPS.Game
         public float exposureDegrade = 0.008f;
         [Tooltip("Time for Sky Transiction ")]
         public float timeTransiction=1.5f;
+        [Tooltip("Sea Game Obcject ")]
+        public GameObject seaGameobject;
+        [Tooltip("Sea Game Obcject ")]
+        public Material seaMaterial;
+        [Tooltip("Towards Tint")]
+        public Color worstSeaTint;
 
         Material currentSkyboxMaterial;
+        Material currentSeaMaterial;
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -25,7 +33,9 @@ namespace Unity.FPS.Game
             currentSkyboxMaterial.CopyPropertiesFromMaterial(skyboxMaterial);
             RenderSettings.skybox = currentSkyboxMaterial;
             EventManager.AddListener<ObjectiveCompletedEvent>(OnObjectiveUpdateEvent);
-
+            currentSeaMaterial = new Material(seaMaterial.shader);
+            currentSeaMaterial.CopyPropertiesFromMaterial(seaMaterial);
+            seaGameobject.GetComponent<Renderer>().material = currentSeaMaterial;
         }
 
         void OnObjectiveUpdateEvent(ObjectiveCompletedEvent evt) => UpdateSky();
@@ -39,14 +49,19 @@ namespace Unity.FPS.Game
         {
             float currentTime = 0f;
             float startingExposure = RenderSettings.skybox.GetFloat("_Exposure");
-            Color startingColor = RenderSettings.skybox.GetColor("_Tint");
-            Color desiredColor = Color.Lerp(RenderSettings.skybox.GetColor("_Tint"), worstSkyTint, 0.2f);
+            Color startingSkyColor = RenderSettings.skybox.GetColor("_Tint");
+            Color desiredSkyColor = Color.Lerp(RenderSettings.skybox.GetColor("_Tint"), worstSkyTint, 0.4f);
+            Color startingSeaColor = currentSeaMaterial.GetColor("_Color");
+            Color desiredSeaColor = Color.Lerp(currentSeaMaterial.GetColor("_Color"), worstSeaTint, 0.5f);
+
             while (timeTransiction > currentTime)
             {
                 yield return new WaitForFixedUpdate();
                 currentTime += Time.fixedDeltaTime;
                 RenderSettings.skybox.SetFloat("_Exposure", Mathf.Lerp(startingExposure, startingExposure- exposureDegrade,currentTime/timeTransiction));
-                RenderSettings.skybox.SetColor("_Tint", Color.Lerp(startingColor, desiredColor, currentTime / timeTransiction));
+                RenderSettings.skybox.SetColor("_Tint", Color.Lerp(startingSkyColor, desiredSkyColor, currentTime / timeTransiction));
+                seaMaterial.SetColor("_Color", Color.Lerp(startingSeaColor, desiredSeaColor, currentTime / timeTransiction));
+
             }
         }
     }
